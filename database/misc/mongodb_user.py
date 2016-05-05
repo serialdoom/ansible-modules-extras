@@ -203,19 +203,19 @@ def main():
     state = module.params['state']
 
     try:
-    	if replica_set:
-    	   client = MongoClient(login_host, int(login_port), replicaset=replica_set, ssl=ssl)
-    	else:
-    	   client = MongoClient(login_host, int(login_port), ssl=ssl)
+        if replica_set:
+            client = MongoClient(login_host, int(login_port), replicaset=replica_set, ssl=ssl)
+        else:
+            client = MongoClient(login_host, int(login_port), ssl=ssl)
 
         # try to authenticate as a target user to check if it already exists
         try:
-           client[db_name].authenticate(user, password)
-           if state == 'present':
-              module.exit_json(changed=False, user=user)
+            client[db_name].authenticate(user, password)
+            if state == 'present':
+                module.exit_json(changed=False, user=user)
         except OperationFailure:
-           if state == 'absent':
-              module.exit_json(changed=False, user=user)
+            if state == 'absent':
+                module.exit_json(changed=False, user=user)
 
         if login_user is None and login_password is None:
             mongocnf_creds = load_mongocnf()
